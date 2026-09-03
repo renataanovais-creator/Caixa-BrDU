@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Caixa BrDU · Mobile</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --navy:#1B3A6B;--navy-u:#e8eef7;
+  --yellow:#F5C518;--yellow-d:#c9a000;
+  --green:#2d9e6b;--green-l:#eaf7f1;
+  --red:#d63031;--red-l:#fff1f1;
+  --amber:#c97a00;--amber-l:#fef5e7;
+  --purple:#6c3fa0;
+  --teal:#0984e3;
+  --border:#e9ecef;--bg:#f4f5f8;--surface:#fff;
+  --text:#1a1a2e;--text2:#555e6b;--text3:#9099a8;
+  --r:10px;--r-sm:6px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:72px}
+
+/* ── HEADER ── */
+.header{
+  background:var(--navy);
+  padding:0 14px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+  border-bottom:3px solid var(--yellow);
+}
+.brand-m{display:flex;align-items:center;gap:8px}
+.logo-img{height:32px;width:32px;border-radius:5px;background:var(--yellow);padding:2px;object-fit:contain;flex-shrink:0}
+.logo-fallback{height:32px;width:32px;border-radius:5px;background:var(--yellow);display:none;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--navy);flex-shrink:0}
+.brand-divider{width:1px;height:24px;background:rgba(255,255,255,.2)}
+.caixa-ico-m{
+  width:26px;height:26px;background:rgba(245,197,24,.15);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;border:1px solid rgba(245,197,24,.25);
+  flex-shrink:0;
+}
+.brand-txt-m{display:flex;flex-direction:column;line-height:1.1}
+.brand-main{color:#fff;font-size:14px;font-weight:700}
+.brand-sub{color:rgba(255,255,255,.45);font-size:9px;letter-spacing:.5px;text-transform:uppercase}
+.header-date{color:rgba(255,255,255,.5);font-size:10px}
+
+/* ── VIEW TABS ── */
+.view-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border)}
+.vtab{flex:1;padding:10px 0;font-size:11px;font-weight:600;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent}
+.vtab.active{color:var(--navy);border-bottom-color:var(--navy)}
+
+/* ── MONTH / PERIOD ── */
+.month-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px 4px;background:var(--surface);border-bottom:1px solid var(--border)}
+.month-bar button{background:none;border:none;color:var(--navy);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
+.month-lbl{font-size:13px;font-weight:600;color:var(--text)}
+.period-row{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--border)}
+.pb{flex:1;padding:6px 0;font-size:11px;font-weight:600;border:1px solid var(--border);border-radius:20px;cursor:pointer;background:none;color:var(--text2)}
+.pb.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* ── SUMMARY ── */
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px 8px}
+.sc{background:var(--surface);border-radius:var(--r);padding:12px 13px;border:1px solid var(--border)}
+.sc-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.sc-val{font-size:17px;font-weight:700}
+.sc-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.sc.wide{grid-column:1/-1}
+.pb-bar{height:5px;background:var(--bg);border-radius:4px;overflow:hidden;margin:5px 0 3px}
+.pb-fill{height:100%;border-radius:4px;background:var(--green)}
+.pb-row{display:flex;justify-content:space-between;font-size:10px}
+
+/* ── GRUPOS ACCORDION ── */
+.sec{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 4px}
+.sec-t{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px}
+.sec-a{font-size:11px;color:var(--teal);cursor:pointer}
+.grupos-wrap{padding:0 16px 4px}
+.gcard{background:var(--surface);border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:5px;overflow:hidden}
+.gcard.ag{border-color:var(--navy)}
+.gcard-head{display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer}
+.g-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.g-name{font-size:13px;font-weight:600;flex:1;color:var(--text)}
+.g-cnt{font-size:10px;color:var(--text3);background:var(--bg);border-radius:20px;padding:2px 7px}
+.g-chev{font-size:11px;color:var(--text3);transition:transform .2s;margin-left:4px}
+.gcard.open .g-chev{transform:rotate(180deg)}
+.cascade{display:none;padding:4px 10px 10px 28px;border-top:1px solid var(--border)}
+.gcard.open .cascade{display:block}
+.clbl{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;padding:3px 0 4px}
+.clbl.red{color:var(--red)}
+.spe-row{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:var(--r-sm);cursor:pointer;margin-bottom:2px}
+.spe-row:active{background:var(--bg)}
+.spe-row.sel{background:var(--navy-u)}
+.spb{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.spb.ok{background:var(--navy-u);color:var(--navy)}
+.spb.nok{background:var(--red-l);color:var(--red)}
+.spe-n{font-size:12px;color:var(--text);flex:1}
+.spe-pend{font-size:10px;font-weight:700;color:var(--red)}
+
+/* ── SPE BANNER ── */
+.spe-banner{margin:0 16px 8px;padding:9px 13px;border-radius:var(--r);background:var(--navy-u);border:1.5px solid var(--navy);display:none;align-items:center;justify-content:space-between;font-size:12px}
+.spe-banner.show{display:flex}
+.spe-banner strong{color:var(--navy)}
+.spe-banner button{background:none;border:none;color:var(--navy);font-size:11px;font-weight:600;cursor:pointer}
+.spe-banner.nok{background:var(--red-l);border-color:var(--red)}
+.spe-banner.nok strong,.spe-banner.nok button{color:var(--red)}
+
+/* ── CHIPS ── */
+.cats-scroll{display:flex;gap:6px;padding:0 16px 8px;overflow-x:auto;scrollbar-width:none}
+.cats-scroll::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:5px 12px;border-radius:20px;border:1px solid var(--border);font-size:11px;cursor:pointer;background:var(--surface);color:var(--text2);font-weight:500}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.status-row{display:flex;justify-content:space-between;align-items:center;padding:4px 16px 8px}
+.status-row select{font-size:11px;border:1px solid var(--border);border-radius:var(--r-sm);padding:4px 8px;color:var(--text2);background:var(--surface)}
+
+/* ── TX LIST ── */
+.tx-list{padding:0 16px;display:flex;flex-direction:column;gap:6px}
+.tx-item{background:var(--surface);border-radius:var(--r);padding:11px 12px;display:flex;align-items:center;gap:10px;border:1px solid var(--border)}
+.tx-ico{width:33px;height:33px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ico-out{background:#fef2f2}.ico-in{background:var(--green-l)}.ico-pend{background:var(--amber-l)}
+.tx-body{flex:1;min-width:0}
+.tx-nm{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-ds{font-size:10px;color:var(--text3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-right{text-align:right;flex-shrink:0}
+.tx-v{font-size:13px;font-weight:700}
+.tx-v.out{color:var(--red)}.tx-v.in{color:var(--green)}
+.tx-d{font-size:10px;color:var(--text3);margin-top:2px}
+.badge{display:inline-block;font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;margin-top:3px}
+.badge.pago{background:var(--green-l);color:#0b6e4f}
+.badge.pend{background:var(--amber-l);color:var(--amber)}
+.badge.venc{background:var(--red-l);color:var(--red)}
+.spe-tag{font-size:9px;background:var(--navy-u);color:var(--navy);border-radius:4px;padding:1px 5px;margin-left:3px;font-weight:600;vertical-align:middle}
+.spe-tag.nok{background:var(--red-l);color:var(--red)}
+.empty{padding:32px;text-align:center;color:var(--text3);font-size:12px}
+
+/* ── SALDOS MOBILE ── */
+.saldo-hero-m{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px 8px}
+.hero-card-m{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:11px 12px}
+.hero-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.hero-val{font-size:16px;font-weight:700}
+.hero-sub{font-size:10px;color:var(--text3);margin-top:2px}
+
+.spe-saldo-list{padding:0 16px;display:flex;flex-direction:column;gap:6px}
+.ssc-card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:12px 14px;cursor:pointer}
+.ssc-card.sel{border-color:var(--navy);border-width:2px;background:var(--navy-u)}
+.ssc-card.nok{border-color:var(--red)}
+.ssc-top-m{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.ssc-name-m{font-size:13px;font-weight:700;color:var(--text)}
+.ssc-badge-m{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px}
+.ssc-badge-m.ok{background:var(--navy-u);color:var(--navy)}
+.ssc-badge-m.nok{background:var(--red-l);color:var(--red)}
+.ssc-val-m{font-size:18px;font-weight:700;color:var(--navy)}
+.ssc-sub-m{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* detalhe contas */
+.conta-list{padding:0 16px;display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.conta-card{background:var(--surface);border-radius:var(--r-sm);border:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.conta-left{flex:1;min-width:0}
+.conta-nome{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conta-meta{font-size:10px;color:var(--text3);margin-top:1px}
+.conta-saldo{font-size:13px;font-weight:700;color:var(--navy);text-align:right;flex-shrink:0}
+.real-tag{font-size:8px;font-weight:600;background:var(--green-l);color:#0b6e4f;padding:1px 4px;border-radius:3px}
+.sim-tag{font-size:8px;font-weight:600;background:#fef9c3;color:#854d0e;padding:1px 4px;border-radius:3px}
+.tipo-badge{font-size:9px;padding:1px 6px;border-radius:20px;font-weight:700}
+.tipo-cc{background:#e8eef7;color:#1B3A6B}
+.tipo-cri{background:#f3eeff;color:#6c3fa0}
+.tipo-esc{background:var(--amber-l);color:var(--amber)}
+.tipo-inv{background:var(--green-l);color:#0b6e4f}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:430px;background:var(--surface);border-top:2px solid var(--yellow);display:flex;padding:6px 0 env(safe-area-inset-bottom,12px)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;color:var(--text3);cursor:pointer;border:none;background:none;padding:4px}
+.nav-btn.active{color:var(--navy)}
+.nav-ico{font-size:20px}
+
+/* ── SCREENS ── */
+.screen{display:none}
+.screen.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand-m">
+    <img src="https://brdu.com.br/wp-content/uploads/2023/06/icone-logo.png" alt="BrDU" class="logo-img"
+      onerror="this.style.display='none';document.getElementById('lfb').style.display='flex'">
+    <div class="logo-fallback" id="lfb">Br<span style="color:#1B3A6B">DU</span></div>
+    <div class="brand-divider"></div>
+    <div class="caixa-ico-m">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="8" width="20" height="13" rx="2.5" fill="#F5C518"/>
+        <rect x="2" y="8" width="20" height="5" rx="2.5" fill="#c9a000"/>
+        <rect x="10.5" y="5.5" width="3" height="4" rx="1.5" fill="#F5C518"/>
+        <text x="12" y="18" font-family="Arial,sans-serif" font-size="6.5" font-weight="bold" fill="#1B3A6B" text-anchor="middle">R$</text>
+        <circle cx="18" cy="16" r="2.2" fill="rgba(27,58,107,.3)"/>
+        <circle cx="18" cy="16" r="1" fill="rgba(27,58,107,.6)"/>
+      </svg>
+    </div>
+    <div class="brand-txt-m">
+      <span class="brand-main">CAIXA BrDU</span>
+      <span class="brand-sub">Tesouraria</span>
+    </div>
+  </div>
+  <span id="today-lbl" style="color:rgba(255,255,255,.5);font-size:10px"></span>
+</div>
+
+<!-- VIEW TABS -->
+<div class="view-tabs">
+  <button class="vtab active" onclick="setView('caixa',this)">📈 Fluxo de Caixa</button>
+  <button class="vtab" onclick="setView('saldos',this)">🏦 Saldos</button>
+</div>
+
+<!-- MONTH + PERIOD -->
+<div class="month-bar">
+  <button onclick="changeMonth(-1)">‹</button>
+  <span class="month-lbl" id="month-lbl">Junho 2026</span>
+  <button onclick="changeMonth(1)">›</button>
+</div>
+<div class="period-row">
+  <button class="pb active" onclick="setPer(this)">Mês</button>
+  <button class="pb" onclick="setPer(this)">Semana</button>
+  <button class="pb" onclick="setPer(this)">Ano</button>
+</div>
+
+<!-- ═══ TELA CAIXA ═══ -->
+<div class="screen show" id="screen-caixa">
+  <div class="sum-grid" id="sum-grid"></div>
+
+  <div class="sec"><span class="sec-t">Grupos</span><span class="sec-a" onclick="clearAll()">Limpar</span></div>
+  <div class="grupos-wrap" id="grupos-wrap"></div>
+
+  <div id="spe-banner" class="spe-banner"></div>
+
+  <div class="sec"><span class="sec-t">Categoria</span></div>
+  <div class="cats-scroll" id="cat-chips"></div>
+
+  <div class="status-row">
+    <span style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px">Status</span>
+    <select id="st-sel" onchange="renderCaixa()">
+      <option value="todos">Todos</option>
+      <option value="pago">Pago</option>
+      <option value="pend">A pagar</option>
+      <option value="venc">Vencido</option>
+    </select>
+  </div>
+  <div class="tx-list" id="tx-list"></div>
+</div>
+
+<!-- ═══ TELA SALDOS ═══ -->
+<div class="screen" id="screen-saldos">
+  <div class="saldo-hero-m" id="saldo-hero"></div>
+
+  <div class="sec">
+    <span class="sec-t">SPE / Grupos</span>
+    <select id="tipo-filter-m" onchange="renderSaldosMobile()" style="font-size:10px;border:1px solid var(--border);border-radius:6px;padding:3px 7px;color:var(--text2);background:var(--surface)">
+      <option value="todos">Todos os tipos</option>
+      <option value="Conta Corrente">C/C</option>
+      <option value="CRI">CRI</option>
+      <option value="Escrow">Escrow</option>
+    </select>
+  </div>
+  <div class="spe-saldo-list" id="spe-saldo-list"></div>
+
+  <div id="conta-section" style="display:none">
+    <div class="sec" style="margin-top:10px">
+      <span class="sec-t" id="conta-sec-title">Contas</span>
+      <span class="sec-a" onclick="closeConta()">✕ Fechar</span>
+    </div>
+    <div class="conta-list" id="conta-list"></div>
+  </div>
+
+  <div style="padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap">
+    <span style="font-size:10px;color:var(--text3)">ℹ Saldos simulados.</span>
+    <span style="font-size:10px"><span class="real-tag">REAL</span> da planilha · <span class="sim-tag">SIM</span> aguarda integração</span>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active"><div class="nav-ico">🏠</div>Início</button>
+  <button class="nav-btn"><div class="nav-ico">📊</div>Relatório</button>
+  <button class="nav-btn"><div class="nav-ico">🏦</div>Contas</button>
+  <button class="nav-btn"><div class="nav-ico">⚙️</div>Config</button>
+</div>
+
+<script>
+const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+let curMonth=5,curYear=2026,activeGrupo='todos',activeSPE=null,activeCat='todos',activeSPESaldo=null,activeView='caixa';
+
+const CONTAS=[{"uau": 1, "razao": "BrDU URBANISMO S/A", "cnpj": "12.484.905/0001-63", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "02/9410", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 76911.5, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 1, "razao": "BrDU URBANISMO S/A", "cnpj": "12.484.905/0001-63", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "35026-8", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 380000.0, "data_saldo": "18/06/2026", "saldo_real": true}, {"uau": 1, "razao": "BrDU URBANISMO S/A", "cnpj": "12.484.905/0001-63", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000023-1", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 290000.0, "data_saldo": "18/06/2026", "saldo_real": true}, {"uau": 1, "razao": "BrDU URBANISMO S/A", "cnpj": "12.484.905/0001-63", "banco_n": 33, "banco": "Santander", "ag": "2271", "cc": "130112973-2", "tipo": "Escrow", "grupo": "BrDU", "status": "Ativa", "saldo": 601779.33, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 1, "razao": "BCOITAUBBA BRDU URBANISMO SA", "cnpj": "12.484.905/0001-63", "banco_n": 341, "banco": "Itaú", "ag": "2938", "cc": "41051-7", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 88508.31, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 1, "razao": "BrDU URBANISMO S/A", "cnpj": "12.484.905/0001-63", "banco_n": 237, "banco": "Bradesco", "ag": "3684", "cc": "4242-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 81365.59, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 1, "razao": "BrDU URBANISMO S/A", "cnpj": "12.484.905/0001-63", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "04/3606", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 107115.46, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 3, "razao": "BRDU SPE SAO MATEUS LTDA", "cnpj": "13357898000100", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000081-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 10889.19, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 3, "razao": "BRDU SPE SAO MATEUS LTDA", "cnpj": "13357898000100", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000138-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 50919.66, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 3, "razao": "BRDU SPE SAO MATEUS LTDA", "cnpj": "9304427000158", "banco_n": 341, "banco": "Itaú", "ag": "7307", "cc": "35820-5", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 320000.0, "data_saldo": "18/06/2026", "saldo_real": true}, {"uau": 3, "razao": "BRDU SPE SAO MATEUS LTDA", "cnpj": "13357898000100", "banco_n": 104, "banco": "Caixa", "ag": "0717", "cc": "000579184281-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 26627.24, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 4, "razao": "BRDU SPE TANGARA DA SERRA LTDA", "cnpj": "13358002000107", "banco_n": 33, "banco": "Santander", "ag": "2032", "cc": "13004573-4", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 60889.96, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 4, "razao": "BRDU SPE TANGARA DA SERRA LTDA", "cnpj": "13358002000107", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000080-8", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 3671.05, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 4, "razao": "BRDU SPE TANGARA DA SERRA LTDA", "cnpj": "9304427000158", "banco_n": 341, "banco": "Itaú", "ag": "7307", "cc": "35815-5", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 285000.0, "data_saldo": "18/06/2026", "saldo_real": true}, {"uau": 4, "razao": "BRDU SPE TANGARA DA SERRA LTDA", "cnpj": "13358002000107", "banco_n": 104, "banco": "Caixa", "ag": "2086", "cc": "000579184281-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 78161.19, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 5, "razao": "BRDU SPE CUIABA 01 LTDA", "cnpj": "13512865000189", "banco_n": 33, "banco": "Santander", "ag": "2032", "cc": "13004242-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 65620.51, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 9, "razao": "BRDU IMPERATRIZ PARTICIPACOES IMOBILIARIAS LTDA", "cnpj": "13512818000135", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000104-3", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 26842.65, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 10, "razao": "LUZIANIA INVESTIMENTOS 01 LTDA", "cnpj": "14163572000104", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000132-8", "tipo": "BAIXADA", "grupo": "BrDU", "status": "Encerrada", "saldo": 70917.25, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 11, "razao": "BRASIL PARTICIPACOES IMOBILIARIAS LTDA", "cnpj": "13131382000134", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "1597-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 97226.94, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 17, "razao": "BRDU SPE CUIABA 01 LTDA", "cnpj": "13512865000189", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000103-6", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 1276.6, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 17, "razao": "BRDU SPE CUIABA 01 LTDA", "cnpj": "13512865000189", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000214-7", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 96795.4, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 17, "razao": "BRDU SPE CUIABA 01 LTDA", "cnpj": "9304427000158", "banco_n": 341, "banco": "Itaú", "ag": "7307", "cc": "35816-3", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 338311.58, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 17, "razao": "BRDU SPE CUIABA 01 LTDA", "cnpj": "13512865000189", "banco_n": 104, "banco": "Caixa", "ag": "0790", "cc": "000577087357-0", "tipo": "Conta Investimento", "grupo": "BrDU", "status": "Ativa", "saldo": 305187.89, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 17, "razao": "BRDU SPE CUIABA 01 LTDA", "cnpj": "13512865000189", "banco_n": 104, "banco": "Caixa", "ag": "0790", "cc": "000739121639-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 19079.8, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 18, "razao": "BRDU SPE VARZEA GRANDE LTDA", "cnpj": "9304427000158", "banco_n": 341, "banco": "Itaú", "ag": "7307", "cc": "35814-8", "tipo": "CRI", "grupo": "GINCO", "status": "Ativa", "saldo": 434168.84, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 19, "razao": "BELO MONTE EMPREENDIMENTOS IMOBILIARIOS SPE LTDA", "cnpj": "15611185000148", "banco_n": 104, "banco": "Caixa", "ag": "4786", "cc": "000579476809-2", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 40723.05, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 19, "razao": "BELO MONTE EMPREENDIMENTOS IMOBILIARIOS SPE LTDA", "cnpj": "15611185000148", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "04/2715", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 11583.13, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 19, "razao": "BELO MONTE EMPREENDIMENTOS IMOBILIARIOS SPE LTDA", "cnpj": "15611185000148", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51561-2", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 12057.61, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 22, "razao": "BRDU SPE SAO MATEUS LTDA", "cnpj": "30618056000175", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000162-7", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 101775.58, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 24, "razao": "BRDU SPE LUZIÂNIA 03 SA", "cnpj": "15662571000169", "banco_n": "SEM C/C", "banco": "SEM C/C", "ag": "SEM C/C", "cc": "SEM C/C", "tipo": "N/A", "grupo": "BrDU", "status": "Ativa", "saldo": 72645.26, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 25, "razao": "AGUA BRASIL SPE IMPERATRIZ 03 LTDA", "cnpj": "8769451000108", "banco_n": 237, "banco": "Bradesco", "ag": "3395", "cc": "03/3193", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 378637.46, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 25, "razao": "AGUA BRASIL SPE IMPERATRIZ 03 LTDA", "cnpj": "15662589000160", "banco_n": 33, "banco": "Santander", "ag": "3444", "cc": "130093553", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 87702.95, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 25, "razao": "AGUA BRASIL SPE IMPERATRIZ 03 LTDA", "cnpj": "15662589000160", "banco_n": 104, "banco": "Caixa", "ag": "4919", "cc": "000577051225-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 64579.26, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 25, "razao": "AGUA BRASIL SPE IMPERATRIZ 03 LTDA", "cnpj": "15662589000160", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51557-4", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 116787.33, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 25, "razao": "AGUA BRASIL SPE IMPERATRIZ 03 LTDA", "cnpj": "15662589000160", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51558-2", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 45734.86, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 26, "razao": "AGUA BRASIL SPE IMPERATRIZ 04 LTDA", "cnpj": "8769451000108", "banco_n": 237, "banco": "Bradesco", "ag": "3395", "cc": "03/3193", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 284255.03, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 26, "razao": "AGUA BRASIL SPE IMPERATRIZ 04 LTDA", "cnpj": "15662598000151", "banco_n": 33, "banco": "Santander", "ag": "3444", "cc": "130093546", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 99613.86, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 26, "razao": "AGUA BRASIL SPE IMPERATRIZ 04 LTDA", "cnpj": "15662598000151", "banco_n": 104, "banco": "Caixa", "ag": "1842", "cc": "000577077447-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 74413.11, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 26, "razao": "AGUA BRASIL SPE IMPERATRIZ 04 LTDA", "cnpj": "15662598000151", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51559-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 103473.97, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 26, "razao": "AGUA BRASIL SPE IMPERATRIZ 04 LTDA", "cnpj": "15662598000151", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51560-4", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 69493.58, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 27, "razao": "BRDU SPE ZURIQUE LTDA", "cnpj": "16560949000186", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000254-9", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 84696.33, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 27, "razao": "BRDU SPE ZURIQUE LTDA", "cnpj": "16560949000186", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000304-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 5976.01, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 27, "razao": "BRDU SPE ZURIQUE LTDA", "cnpj": "8769451000108", "banco_n": 237, "banco": "Bradesco", "ag": "3395", "cc": "03/3193", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 164322.36, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 27, "razao": "BRDU SPE ZURIQUE LTDA", "cnpj": "16560949000186", "banco_n": 104, "banco": "Caixa", "ag": "3645", "cc": "000577943454-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 35081.86, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 27, "razao": "BRDU SPE ZURIQUE LTDA", "cnpj": "16560949000186", "banco_n": 104, "banco": "Caixa", "ag": "4919", "cc": "000577051224-1", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 10035.14, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 28, "razao": "AGUA BRASIL IMPERATRIZ INVESTIMENTOS", "cnpj": "15810418000131", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "SEM C/C", "tipo": "ENCERRADA", "grupo": "BrDU", "status": "Encerrada", "saldo": 28318.51, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 29, "razao": "BRDU CONSULTORIA LTDA", "cnpj": "16422582000134", "banco_n": 33, "banco": "Santander", "ag": "0927", "cc": "13000223-3", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 244000.0, "data_saldo": "18/06/2026", "saldo_real": true}, {"uau": 29, "razao": "BRDU CONSULTORIA LTDA", "cnpj": "16422582000134", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "37793-1", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 33717.85, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 29, "razao": "BRDU CONSULTORIA LTDA", "cnpj": "16422582000134", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "01/1994", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 76464.29, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 29, "razao": "BRDU CONSULTORIA LTDA", "cnpj": "16422582000134", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "53490-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 450000.0, "data_saldo": "18/06/2026", "saldo_real": true}, {"uau": 31, "razao": "BRDU SPE FLORENCA EMPREENDIMENTOS LTDA", "cnpj": "16577870000168", "banco_n": 33, "banco": "Santander", "ag": "2032", "cc": "13004219-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 44736.63, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 36, "razao": "BRDU SPE VARSOVIA LTDA", "cnpj": "16693461000127", "banco_n": 33, "banco": "Santander", "ag": "2032", "cc": "13004223-6", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 25536.09, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 37, "razao": "BRDU SPE HIDROLÂNDIA 01 EMPREENDIMENTOS LTDA(DUBAI)", "cnpj": "17817874000139", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "06/2048", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 32403.85, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 38, "razao": "BRDU SPE VERMONT LTDA", "cnpj": "17804316000139", "banco_n": 104, "banco": "Caixa", "ag": "1842", "cc": "000577077448-3", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 112430.22, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 38, "razao": "BRDU SPE VERMONT LTDA", "cnpj": "17804316000139", "banco_n": 104, "banco": "Caixa", "ag": "3431", "cc": "000577064616-7", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 77940.23, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 38, "razao": "BRDU SPE VERMONT LTDA", "cnpj": "17804316000139", "banco_n": 33, "banco": "Santander", "ag": "2032", "cc": "13004222-9", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 73291.16, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 38, "razao": "BRDU SPE VERMONT LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "56683-2", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 410000.0, "data_saldo": "18/06/2026", "saldo_real": true}, {"uau": 40, "razao": "BRDU SPE GENEBRA LTDA", "cnpj": "17870944000112", "banco_n": 33, "banco": "Santander", "ag": "2032", "cc": "13004218-8", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 87630.65, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 40, "razao": "BRDU SPE GENEBRA LTDA", "cnpj": "17870944000112", "banco_n": 33, "banco": "Santander", "ag": "2032", "cc": "13004256-6", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 20026.6, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 41, "razao": "BRDU SPE ORLANDO LTDA", "cnpj": "17870906000160", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "26104-1", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 45844.93, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 41, "razao": "BRDU SPE ORLANDO LTDA", "cnpj": "8769451000108", "banco_n": 237, "banco": "Bradesco", "ag": "3395", "cc": "03/3193", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 446123.64, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 49, "razao": "AGUA BRASIL SPE IMPERATRIZ 04 LTDA", "cnpj": "31054464000104", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "1676-4", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 76979.97, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 50, "razao": "AGUA BRASIL SPE IMPERATRIZ 03 LTDA", "cnpj": "30993105000150", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "1679-9", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 67055.49, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 57, "razao": "BRDU SPE COIMBRA LTDA", "cnpj": "19909210000125", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "1852-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 82311.4, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 59, "razao": "GUIMARAES ROSA INC. E EMP. IMOB. LTDA", "cnpj": "13614671000194", "banco_n": 104, "banco": "Caixa", "ag": "1842", "cc": "000577545412-6", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 101220.8, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 59, "razao": "GUIMARAES ROSA INC. E EMP. IMOB. LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "33407-4", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 367119.97, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 59, "razao": "GUIMARAES ROSA INC. E EMP. IMOB. LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "33394-4", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 164747.79, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 59, "razao": "GUIMARAES ROSA INC. E EMP. IMOB. LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "33395-1", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 91877.09, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 59, "razao": "GUIMARAES ROSA INC. E EMP. IMOB. LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "33404-1", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 196717.63, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 59, "razao": "GUIMARAES ROSA INC. E EMP. IMOB. LTDA", "cnpj": "13614671000194", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "01/2160", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 32495.03, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 59, "razao": "GUIMARAES ROSA INC. E EMP. IMOB. LTDA", "cnpj": "13614671000194", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51872-7", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 25712.45, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 66, "razao": "HUNA IMOVEIS LTDA", "cnpj": "21.822.478/0003-39", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "NAO ABRIR C/C AINDA", "grupo": "Huna", "status": "A abrir", "saldo": 113177.71, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 66, "razao": "HUNA IMOVEIS LTDA", "cnpj": "21.822.478/0005-09", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "NAO ABRIR C/C AINDA", "grupo": "Huna", "status": "A abrir", "saldo": 105225.93, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 66, "razao": "HUNA IMOVEIS LTDA", "cnpj": "21822478000177", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "02/2098", "tipo": "Conta Corrente", "grupo": "Huna", "status": "Ativa", "saldo": 38104.01, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 66, "razao": "HUNA IMOVEIS LTDA", "cnpj": "21822478000177", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "53546-0", "tipo": "Conta Corrente", "grupo": "Huna", "status": "Ativa", "saldo": 78824.92, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 67, "razao": "BRDU SPE PARQUE DA MATA LTDA", "cnpj": "22007737000179", "banco_n": 104, "banco": "Caixa", "ag": "2086", "cc": "000577075955-7", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 47778.01, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 67, "razao": "BRDU SPE PARQUE DA MATA LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "56683-2", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 418382.61, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 67, "razao": "BRDU SPE PARQUE DA MATA LTDA", "cnpj": "22007737000179", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "08/3344", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 55332.8, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 67, "razao": "BRDU SPE PARQUE DA MATA LTDA", "cnpj": "22007737000179", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51936-7", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 32153.18, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 68, "razao": "BRDU SPE ITUPEVA LTDA", "cnpj": "22233987000127", "banco_n": 104, "banco": "Caixa", "ag": "3601", "cc": "000577064438-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 29971.99, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 68, "razao": "BRDU SPE ITUPEVA LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "56683-2", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 287706.21, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 68, "razao": "BRDU SPE ITUPEVA LTDA", "cnpj": "22233987000127", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "03/3341", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 31897.62, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 68, "razao": "BRDU SPE ITUPEVA LTDA", "cnpj": "22233987000127", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "52514-6", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 70358.03, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 71, "razao": "BRDU ALTA VISTA INVESTIMENTOS LTDA", "cnpj": "22207881000159", "banco_n": "SEM C/C", "banco": "SEM C/C", "ag": "SEM C/C", "cc": "SEM C/C", "tipo": "N/A", "grupo": "BrDU", "status": "Ativa", "saldo": 107789.83, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 74, "razao": "BRDU CAMPO GRANDE 01 EMPREENDIMENTOS LTDA", "cnpj": "22833841000112", "banco_n": 104, "banco": "Caixa", "ag": "2485", "cc": "000578955691-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 48228.36, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 74, "razao": "BRDU CAMPO GRANDE 01 EMPREENDIMENTOS LTDA", "cnpj": "8769451000108", "banco_n": 237, "banco": "Bradesco", "ag": "3395", "cc": "05/2995", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 161148.68, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 74, "razao": "BRDU CAMPO GRANDE 01 EMPREENDIMENTOS LTDA", "cnpj": "22833841000112", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "3343-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 119705.74, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 74, "razao": "BRDU CAMPO GRANDE 01 EMPREENDIMENTOS LTDA", "cnpj": "22833841000112", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51995-2", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 61388.39, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 77, "razao": "BRDU SPE LUZIANIA S/A", "cnpj": "8769451000108", "banco_n": 237, "banco": "Bradesco", "ag": "3395", "cc": "03/3193", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 113636.48, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 77, "razao": "BRDU SPE LUZIANIA S/A", "cnpj": "14191620000160", "banco_n": 104, "banco": "Caixa", "ag": "4700", "cc": "000578740468-4", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 6130.41, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 77, "razao": "BRDU SPE LUZIANIA S/A", "cnpj": "14191620000160", "banco_n": 33, "banco": "Santander", "ag": "3444", "cc": "130093735", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 13603.07, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 77, "razao": "BRDU SPE LUZIANIA S/A", "cnpj": "14191620000160", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "1001-4", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 75479.8, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 77, "razao": "BRDU SPE LUZIANIA S/A", "cnpj": "14191620000160", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "50826-8", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 95153.48, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 78, "razao": "SPE PARQUE DOS VENTOS LTDA", "cnpj": "17669370000119", "banco_n": 104, "banco": "Caixa", "ag": "4673", "cc": "000577051393-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 50948.12, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 78, "razao": "SPE PARQUE DOS VENTOS LTDA", "cnpj": "02.773.542/0001-22", "banco_n": 341, "banco": "Itaú", "ag": "0350", "cc": "56683-2", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 103505.25, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 78, "razao": "SPE PARQUE DOS VENTOS LTDA", "cnpj": "17669370000119", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "1427-3", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 46103.5, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 78, "razao": "SPE PARQUE DOS VENTOS LTDA", "cnpj": "17669370000119", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "51494-2", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 119536.5, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 79, "razao": "PROJETO RIO VERMELHO EMPREENDIMENTOS IMOBILIARIOS LTDA", "cnpj": "15291183000119", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "11177-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 63729.16, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 79, "razao": "PROJETO RIO VERMELHO EMPREENDIMENTOS IMOBILIARIOS LTDA", "cnpj": "15291183000119", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "11178-3", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 116543.87, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 79, "razao": "PROJETO RIO VERMELHO EMPREENDIMENTOS IMOBILIARIOS LTDA", "cnpj": "15291183000119", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "13662-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 103363.17, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 79, "razao": "PROJETO RIO VERMELHO EMPREENDIMENTOS IMOBILIARIOS LTDA", "cnpj": "15291183000119", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "13742-1", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 1871.98, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 79, "razao": "PROJETO RIO VERMELHO EMPREENDIMENTOS IMOBILIARIOS LTDA", "cnpj": "8769451000108", "banco_n": 237, "banco": "Bradesco", "ag": "3395", "cc": "03/3193", "tipo": "CRI", "grupo": "BrDU", "status": "Ativa", "saldo": 346667.07, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 79, "razao": "PROJETO RIO VERMELHO EMPREENDIMENTOS IMOBILIARIOS LTDA", "cnpj": "15291183000119", "banco_n": 104, "banco": "Caixa", "ag": "2274", "cc": "000582493763-6", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 81964.39, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 83, "razao": "BRDU EMPREENDIMENTOS IMOBILIARIOS SPE 02 LTDA", "cnpj": "29503397000116", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "25855-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 64667.95, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 84, "razao": "BRDU TGS06 SPE LTDA", "cnpj": "29.698.455/0001-04", "banco_n": "ABRIR", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "N/A", "grupo": "BrDU", "status": "Ativa", "saldo": 32385.61, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 85, "razao": "BRDU SPE GYN03 LTDA", "cnpj": "29664267000165", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "27070-9", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 77094.93, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 90, "razao": "TAJ EMPREENDIMENTOS E PARTICIPAÇÕES LTDA", "cnpj": "09609685000142", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "27487-9", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 13830.48, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 90, "razao": "TAJ EMPREENDIMENTOS E PART SA", "cnpj": "09.609.685/0001-42", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "98293-8", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 52454.45, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 93, "razao": "TANGARA DA SERRA 03 SPE LTDA", "cnpj": "37219894000115", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "17304-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 54719.98, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 93, "razao": "TANGARA DA SERRA 03 SPE LTDA", "cnpj": "37219894000115", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "22262-3", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 114481.0, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 93, "razao": "TANGARA DA SERRA 03 SPE LTDA", "cnpj": "37219894000115", "banco_n": 104, "banco": "Caixa", "ag": "2086", "cc": "000577075959-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 105164.43, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 93, "razao": "TANGARA DA SERRA 03 SPE LTDA", "cnpj": "37219894000115", "banco_n": 33, "banco": "Santander", "ag": "3444", "cc": "130093924", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 31974.99, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 93, "razao": "TANGARA DA SERRA 03 SPE LTDA", "cnpj": "48.415.978/0001-40", "banco_n": 274, "banco": "Grafeno", "ag": "0001", "cc": "08140847-8", "tipo": "Conta Escrow", "grupo": "BrDU", "status": "Ativa", "saldo": 60320.04, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 93, "razao": "TANGARA DA SERRA 03 SPE LTDA", "cnpj": "48.415.978/0001-40", "banco_n": 310, "banco": "Vortex", "ag": "0001", "cc": "00108813-5", "tipo": "Conta Escrow", "grupo": "BrDU", "status": "Ativa", "saldo": 21848.9, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 94, "razao": "TANGARA DA SERRA 04 SPE LTDA", "cnpj": "47370888000118", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "35328-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 109559.03, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 94, "razao": "TANGARA DA SERRA 04 SPE LTDA", "cnpj": "47370888000118", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "40883-2", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 104526.97, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 94, "razao": "TANGARA DA SERRA 04 SPE LTDA", "cnpj": "47370888000118", "banco_n": 33, "banco": "Santander", "ag": "3444", "cc": "130093539", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 36164.15, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 94, "razao": "TANGARA DA SERRA 04 SPE LTDA", "cnpj": "48.415.978/0001-40", "banco_n": 274, "banco": "Grafeno", "ag": "0001", "cc": "08141473-2", "tipo": "Conta Escrow", "grupo": "BrDU", "status": "Ativa", "saldo": 76854.46, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 94, "razao": "TANGARA DA SERRA 04 SPE LTDA", "cnpj": "48.415.978/0001-40", "banco_n": 310, "banco": "Vortex", "ag": "0001", "cc": "00108809-7", "tipo": "Conta Escrow", "grupo": "BrDU", "status": "Ativa", "saldo": 73271.94, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 95, "razao": "RESERVA IMOVEIS E EMPREENDIMENTOS LTDA", "cnpj": "41720713000107", "banco_n": 341, "banco": "Itaú", "ag": "1360", "cc": "99790-0", "tipo": "NAO É MAIS BRDU", "grupo": "BrDU", "status": "Encerrada", "saldo": 18764.29, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 97, "razao": "BRDU GYN03 INVESTIMENTOS LTDA", "cnpj": "46968742000106", "banco_n": 756, "banco": "Engecred", "ag": "3299", "cc": "27500-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 91620.04, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 98, "razao": "MAIS DESENVOLVER PARTICIPAÇOES SA", "cnpj": "40607276000157", "banco_n": 756, "banco": "Secovicred", "ag": "3300", "cc": "13807-0", "tipo": "Transferida para o socio", "grupo": "BrDU", "status": "Encerrada", "saldo": 64955.79, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 99, "razao": "BRDU GYN05 INVESTIMENTOS LTDA", "cnpj": "49827945000170", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "N/A", "grupo": "BrDU", "status": "Ativa", "saldo": 93545.86, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 100, "razao": "BRDU TGS06 INVESTIMENTOS LTDA", "cnpj": "54.976.405/0001-99", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "N/A", "grupo": "BrDU", "status": "Ativa", "saldo": 63877.26, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 101, "razao": "BRDU TGS05 SPE LTDA", "cnpj": "55.812.595/0001-71", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "N/A", "grupo": "BrDU", "status": "Ativa", "saldo": 568.34, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 102, "razao": "HUNA IMOVEIS LTDA", "cnpj": "21822478000410", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "29238-9", "tipo": "Conta Corrente", "grupo": "Huna", "status": "Ativa", "saldo": 39236.65, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 103, "razao": "BRDU SENADOR CANEDO INVESTIMENTOS 01 LTDA", "cnpj": "58.912.743/0001-18", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "98125-2", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 2827.47, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 104, "razao": "BRDU SENADOR CANEDO INVESTIMENTOS 02 LTDA", "cnpj": "59.132.157/0001-13", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Sem conta", "saldo": 111527.28, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 105, "razao": "BRDU SENADOR CANEDO INVESTIMENTOS 03 LTDA", "cnpj": "59.269.454/0001-05", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Sem conta", "saldo": 105507.26, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 106, "razao": "BRDU SENADOR CANEDO INVESTIMENTOS 04 LTDA", "cnpj": "59.134.464/0001-33", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "97527-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 99884.03, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 107, "razao": "BRDU TGS05 INVESTIMENTOS LTDA", "cnpj": "59.269.383/0001-40", "banco_n": "ABRIR", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "N/A", "grupo": "BrDU", "status": "Ativa", "saldo": 37247.94, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 108, "razao": "BRDU SPE SENADOR CANEDO 01 LTDA", "cnpj": "59.667.395/0001-23", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "98230-0", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 7422.06, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 108, "razao": "BRDU SPE SENADOR CANEDO 01 LTDA", "cnpj": "59.667.395/0001-23", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "98231-8", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 105422.15, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 109, "razao": "BRDU TGS07 INVESTIMENTOS LTDA", "cnpj": "61.079.334/0001-97", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Sem conta", "saldo": 113660.46, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 110, "razao": "BRDU SPE GYN05 LTDA", "cnpj": "61.263.044/0001-07", "banco_n": 341, "banco": "Itaú", "ag": "2903", "cc": "98124-5", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 10735.59, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 111, "razao": "BRDU SENADOR CANEDO INVESTIMENTOS SCP", "cnpj": "62.633.354/0001-20", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 58575.86, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 111, "razao": "BRDU SENADOR CANEDO INVESTIMENTOS SCP", "cnpj": "62.633.354/0001-20", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Ativa", "saldo": 8770.9, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 112, "razao": "BRDU SPE INVESTIMENTOS 01 LTDA - Area de Aparecida", "cnpj": "62.977.311/0001-62", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Sem conta", "saldo": 91391.96, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 113, "razao": "BRDU SPE INVESTIMENTOS 02 LTDA - Area de Goiânia", "cnpj": "63.199.994/0001-37", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Sem conta", "saldo": 92017.21, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 114, "razao": "SPE RIBEIRÃO CASCALHEIRA (JFG)", "cnpj": "63.200.288/0001-68", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 15842.78, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 115, "razao": "BRDU SPE INVESTIMENTOS 04 LTDA", "cnpj": "63.756.345/0001-90", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Sem conta", "saldo": 57296.24, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 116, "razao": "BRDU SPE INVESTIMENTOS 05 LTDA", "cnpj": "63.756.483/0001-79", "banco_n": "N/A", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "Conta Corrente", "grupo": "BrDU", "status": "Sem conta", "saldo": 66201.53, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 117, "razao": "TERRAFIRMO INVESTIMENTOS LTDA", "cnpj": "63.733.812/0001-66", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "40646-5", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 32174.27, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 118, "razao": "BRDU SPE GYN06 LTDA", "cnpj": "65.697.282/0001-73", "banco_n": "ABRIR", "banco": "N/A", "ag": "N/A", "cc": "N/A", "tipo": "ABRIR", "grupo": "BrDU", "status": "A abrir", "saldo": 104755.75, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 166, "razao": "NEXO GESTÃO IMOBILIÁRIA LTDA", "cnpj": "61685468000151", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "35144-0", "tipo": "Conta Corrente", "grupo": "Huna", "status": "Ativa", "saldo": 51064.98, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 200, "razao": "JFG PARTICIPACOES RONDONOPOLIS LTDA", "cnpj": "30725339000116", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "8595-2", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 25809.89, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 200, "razao": "JFG PARTICIPACOES RONDONOPOLIS LTDA", "cnpj": "30725339000116", "banco_n": 104, "banco": "Caixa", "ag": "0614", "cc": "13000023-2", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 64945.88, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 201, "razao": "JFG PARTICIPACOES LUZIANIA LTDA", "cnpj": "30750503000145", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "23871-6", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 87726.76, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 202, "razao": "JFG MARKET LTDA.", "cnpj": "56420818000118", "banco_n": 290, "banco": "Pagseguro", "ag": "0001", "cc": "000579184281-1", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 24537.55, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 203, "razao": "HJFG PARTICIPACOES LTDA", "cnpj": "47378342000103", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "13922-0", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 37750.1, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 204, "razao": "IGF PARTICIPACOES LTDA", "cnpj": "23797775000135", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "3808-3", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 119420.35, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 205, "razao": "JFG CONSTRUCOES E PARTICIPACOES LTDA", "cnpj": "13324731000134", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "11507-0", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 78160.43, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 206, "razao": "JFG PARTICIPACOES GOIANIA LTDA", "cnpj": "30737595000123", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "5341-4", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 52852.96, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 207, "razao": "JFG LOCACOES LTDA", "cnpj": "46572030000173", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "13396-5", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 62350.31, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 208, "razao": "GPF PARTICIPACOES LTDA", "cnpj": "12.628.949/0001-10", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 14960.0, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 209, "razao": "GF PARTICIPACAO EM MINERACAO LTDA", "cnpj": "47.545.476/0001-71", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 27351.33, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 210, "razao": "SUNFOR PARTICIPACOES LTDA", "cnpj": "29.924.235/0001-51", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 40901.22, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 211, "razao": "TROTANOY PARTICIPAÇÕES LTDA", "cnpj": "46.573.128/0001-45", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "13440-6", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 70802.89, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 212, "razao": "TTY PARTICIPACOES LTDA", "cnpj": "46.586.088/0001-76", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 27998.71, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 213, "razao": "WALLIS INVESTIMENTOS LTDA", "cnpj": "24.021.885/0001-73", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 26815.98, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 214, "razao": "WALLIS PARTNERS PARTICIPACOES LTDA", "cnpj": "23.797.732/0001-50", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 8983.67, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 215, "razao": "WALLIS SERVICER SERVICOS ADMINISTRATIVOS LTDA", "cnpj": "23.870.310/0001-62", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 75916.8, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 216, "razao": "WALLIS ENERGIA LTDA", "cnpj": "46.280.570/0001-83", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 27858.54, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 217, "razao": "WALLIS VC LTDA", "cnpj": "46.699.178/0001-73", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 108697.69, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 220, "razao": "JFG AGROPECUARIA LTDA", "cnpj": "66.543.258/0001-42", "banco_n": 756, "banco": "Secovicred", "ag": "3333", "cc": "41.282-1", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Ativa", "saldo": 103226.43, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 505, "razao": "GPF CONSULTORIA LTDA", "cnpj": "18.676.832/0001-98", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "Conta Corrente", "grupo": "JFG", "status": "Sem conta", "saldo": 8967.45, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 1001, "razao": "CAIXA DEPARTAMENTAL", "cnpj": "CAIXA DEPARTAMENTAL", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "CAIXA DEPARTAMENTAL", "grupo": "Gerencial", "status": "Ativa", "saldo": 28941.55, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 2000, "razao": "BANCO PERMUTA", "cnpj": "BANCO PERMUTA", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "BANCO PERMUTA", "grupo": "Gerencial", "status": "Ativa", "saldo": 80442.84, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 3000, "razao": "BANCO CONTROLE", "cnpj": "BANCO CONTROLE", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "BANCO CONTROLE", "grupo": "Gerencial", "status": "Ativa", "saldo": 26101.3, "data_saldo": "18/06/2026", "saldo_real": false}, {"uau": 7001, "razao": "APROVEITAMENTO DE CREDITO", "cnpj": "APROVEITAMENTO DE CREDITO", "banco_n": null, "banco": "", "ag": "", "cc": "", "tipo": "APROVEITAMENTO DE CREDITO", "grupo": "Gerencial", "status": "Ativa", "saldo": 16311.27, "data_saldo": "18/06/2026", "saldo_real": false}];
+
+const GRUPOS_P=[
+  {id:'todos',label:'Todos os grupos',color:'#888'},
+  {id:'BrDU', label:'BrDU Urbanismo', color:'#1B3A6B'},
+  {id:'JFG',  label:'JFG',            color:'#c0922b'},
+  {id:'Huna', label:'Huna Imóveis',   color:'#2d9e6b'},
+  {id:'Gerencial',label:'Gerencial',  color:'#0984e3'},
+];
+
+const SPE_GROUPS=[
+  {id:'smt', label:'São Mateus',     uaus:[3,22],      s:'confirmed',g:'BrDU',d:'SMTIN'},
+  {id:'tgs1',label:'Tangará Serra 1',uaus:[4,5,16,55], s:'confirmed',g:'BrDU',d:'TGSIN'},
+  {id:'cui', label:'Cuiabá',         uaus:[17,5,35],   s:'confirmed',g:'BrDU',d:'CUIN'},
+  {id:'imp3',label:'Imperatriz 3',   uaus:[25,60],     s:'confirmed',g:'BrDU',d:'IMP31'},
+  {id:'imp4',label:'Imperatriz 4',   uaus:[26,61,9,83],s:'confirmed',g:'BrDU',d:'IMP41'},
+  {id:'imp5',label:'Imperatriz 5',   uaus:[27,28],     s:'confirmed',g:'BrDU',d:'IMP51'},
+  {id:'tri', label:'Triângulo',      uaus:[29,39],     s:'confirmed',g:'BrDU',d:'TRIIN'},
+  {id:'dub', label:'Dubai',          uaus:[37],        s:'confirmed',g:'BrDU',d:'DUBIN'},
+  {id:'ron', label:'Rondonópolis',   uaus:[38,40],     s:'confirmed',g:'BrDU',d:'RONIN'},
+  {id:'orl', label:'Orlando',        uaus:[41,76],     s:'confirmed',g:'BrDU',d:'ORLIN'},
+  {id:'gyn2',label:'Goiânia 2',      uaus:[57,59],     s:'confirmed',g:'BrDU',d:'GNIN2'},
+  {id:'prs', label:'Parque da Mata', uaus:[67],        s:'confirmed',g:'BrDU',d:'PRSIN'},
+  {id:'itu', label:'Itupeva',        uaus:[68],        s:'confirmed',g:'BrDU',d:'ITUIN'},
+  {id:'luz', label:'Luziânia',       uaus:[77,18,24],  s:'confirmed',g:'BrDU',d:'LUZIN'},
+  {id:'jat', label:'Jataí',          uaus:[78,29],     s:'confirmed',g:'BrDU',d:'JATIN'},
+  {id:'ron2',label:'Rondonópolis 2', uaus:[79,71],     s:'confirmed',g:'BrDU',d:'RON02'},
+  {id:'gyn3',label:'Goiânia 3',      uaus:[85,97],     s:'confirmed',g:'BrDU',d:'GNIN3'},
+  {id:'gyn4',label:'Goiânia 4',      uaus:[90],        s:'confirmed',g:'BrDU',d:'GNIN04'},
+  {id:'tgs3',label:'Tangará 3',      uaus:[93],        s:'confirmed',g:'BrDU',d:'TGS03'},
+  {id:'tgs4',label:'Tangará 4',      uaus:[94],        s:'confirmed',g:'BrDU',d:'TGS04'},
+  {id:'gyn5',label:'Goiânia 5',      uaus:[99,110],    s:'confirmed',g:'BrDU',d:'GNIN5'},
+  {id:'tgs6',label:'Tangará 6',      uaus:[100,84],    s:'confirmed',g:'BrDU',d:'TGS06'},
+  {id:'tgs5',label:'Tangará 5',      uaus:[101,107],   s:'confirmed',g:'BrDU',d:'TGS05'},
+  {id:'snc', label:'Sen. Canedo',    uaus:[103,104,105,106,108],s:'confirmed',g:'BrDU',d:'SNC'},
+  {id:'tgs7',label:'Tangará 7',      uaus:[109,115],   s:'confirmed',g:'BrDU',d:'TGS07'},
+  {id:'huna',label:'Huna',           uaus:[66,102],    s:'confirmed',g:'Huna',d:'MUTUO'},
+  {id:'jfg_g',label:'JFG Grupo',     uaus:[200,201,202,203,204,205,206,207],s:'confirmed',g:'JFG',d:'JFG'},
+  {id:'v_bp', label:'Brasil Part.',  uaus:[11],        s:'validate', g:'BrDU',d:'BPIN'},
+  {id:'v_flr',label:'Florença',      uaus:[31],        s:'validate', g:'BrDU',d:'UAU 31'},
+  {id:'v_var',label:'Varsóvia',      uaus:[36],        s:'validate', g:'BrDU',d:'UAU 36'},
+  {id:'v_zur',label:'Zurique',       uaus:[27],        s:'validate', g:'BrDU',d:'UAU 27'},
+  {id:'v_gnv',label:'Genebra',       uaus:[40],        s:'validate', g:'BrDU',d:'UAU 40'},
+  {id:'v_taj',label:'TAJ',           uaus:[90],        s:'validate', g:'BrDU',d:'UAU 90'},
+];
+
+const CATS=['Todos','CRI','Empréstimo','Imposto','Tarifa','Aporte','Distribuição','Operacional'];
+const TX=[
+  {id:1, n:'Habitasec CRI 124ª',     d:'BRDU SPE SÃO MATEUS',    v:-45200, t:'out',c:'CRI',        g:'BrDU',s:'pago',dia:13,u:3},
+  {id:2, n:'Habitasec CRI 124ª',     d:'BRDU SPE TANGARÁ',        v:-41800, t:'out',c:'CRI',        g:'BrDU',s:'pend',dia:13,u:4},
+  {id:3, n:'Habitasec CRI 124ª',     d:'BRDU SPE CUIABÁ',         v:-38200, t:'out',c:'CRI',        g:'BrDU',s:'pend',dia:13,u:17},
+  {id:4, n:'OPEA CRI 474ª',          d:'BRDU SPE VERMONT',        v:-38750, t:'out',c:'CRI',        g:'BrDU',s:'pago',dia:14,u:38},
+  {id:5, n:'OPEA CRI 474ª',          d:'BRDU SPE PARQUE DA MATA', v:-34100, t:'out',c:'CRI',        g:'BrDU',s:'pago',dia:14,u:67},
+  {id:6, n:'RIZA CRI 146–150',       d:'ÁGUA BRASIL IMP 03',      v:-22100, t:'out',c:'CRI',        g:'BrDU',s:'pago',dia:22,u:25},
+  {id:7, n:'RIZA CRI 146–150',       d:'BRDU SPE LUZIÂNIA',       v:-21200, t:'out',c:'CRI',        g:'BrDU',s:'pago',dia:22,u:77},
+  {id:8, n:'CCB 384666 – Secovicred',d:'BrDU Urbanismo · P19/84', v:-101100,t:'out',c:'Empréstimo', g:'BrDU',s:'pago',dia:10,u:1},
+  {id:9, n:'CCB 377147 – Secovicred',d:'BRDU SPE DUBAI · P22/84', v:-104000,t:'out',c:'Empréstimo', g:'BrDU',s:'pend',dia:28,u:37},
+  {id:10,n:'Casa Área 1 – CredBlue', d:'BRDU SPE GYN03 · P8/60',  v:-98000, t:'out',c:'Empréstimo', g:'BrDU',s:'pend',dia:10,u:85},
+  {id:11,n:'ISS + INSS',             d:'BrDU Urbanismo SA',       v:-18400, t:'out',c:'Imposto',    g:'BrDU',s:'pago',dia:5, u:1},
+  {id:12,n:'Tarifas Secovicred',     d:'41 contas · Junho',       v:-3280,  t:'out',c:'Tarifa',     g:'BrDU',s:'pago',dia:2, u:1},
+  {id:13,n:'Aporte 01 → SPE 38',    d:'BRDU SPE VERMONT',        v:250000, t:'in', c:'Aporte',     g:'BrDU',s:'pago',dia:3, u:38},
+  {id:14,n:'Aporte 01 → SPE 77',    d:'BRDU SPE LUZIÂNIA',       v:120000, t:'in', c:'Aporte',     g:'BrDU',s:'pend',dia:15,u:77},
+  {id:15,n:'JFG Rondonópolis',       d:'Aporte JFG Construções',  v:45000,  t:'in', c:'Aporte',     g:'JFG', s:'pago',dia:7, u:200},
+  {id:16,n:'Huna Imóveis',           d:'Secovicred 72352',        v:-8200,  t:'out',c:'Operacional',g:'Huna',s:'pago',dia:6, u:66},
+  {id:17,n:'Nexo Gestão',            d:'Secovicred 35144-0',      v:-4800,  t:'out',c:'Operacional',g:'Huna',s:'pend',dia:15,u:166},
+  {id:18,n:'Distribuição de Lucros', d:'BrDU Urbanismo → Sócios', v:-380000,t:'out',c:'Distribuição',g:'BrDU',s:'pend',dia:30,u:1},
+];
+
+function fmtR(v){return'R$\u00a0'+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0})}
+function changeMonth(d){curMonth+=d;if(curMonth>11){curMonth=0;curYear++;}if(curMonth<0){curMonth=11;curYear--;}document.getElementById('month-lbl').textContent=MONTHS[curMonth]+' '+curYear;}
+function setPer(b){document.querySelectorAll('.pb').forEach(x=>x.classList.remove('active'));b.classList.add('active');}
+function setGrupo(id){activeGrupo=id;activeSPE=null;renderAll();}
+function setSPE(id){activeSPE=activeSPE===id?null:id;renderCaixa();}
+function clearAll(){activeSPE=null;activeCat='todos';renderAll();}
+function setCat(c){activeCat=c;renderCaixa();}
+function toggleCard(id){const c=document.getElementById('gc-'+id);if(c)c.classList.toggle('open');}
+function setSPESaldo(id){activeSPESaldo=activeSPESaldo===id?null:id;renderContaDetail();}
+function closeConta(){activeSPESaldo=null;document.getElementById('conta-section').style.display='none';}
+
+function setView(v,btn){
+  activeView=v;
+  document.querySelectorAll('.vtab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('screen-caixa').classList.toggle('show',v==='caixa');
+  document.getElementById('screen-saldos').classList.toggle('show',v==='saldos');
+  if(v==='saldos') renderSaldosMobile();
+}
+
+function filtered(){
+  let tx=[...TX];
+  if(activeGrupo!=='todos') tx=tx.filter(t=>t.g===activeGrupo);
+  if(activeSPE){const g=SPE_GROUPS.find(x=>x.id===activeSPE);if(g)tx=tx.filter(t=>g.uaus.includes(t.u));}
+  if(activeCat!=='todos') tx=tx.filter(t=>t.c===activeCat);
+  const st=document.getElementById('st-sel').value;
+  if(st!=='todos') tx=tx.filter(t=>t.s===st);
+  return tx;
+}
+
+function renderSummary(){
+  const tx=filtered();
+  const saidas=tx.filter(t=>t.t==='out').reduce((a,b)=>a+Math.abs(b.v),0);
+  const entradas=tx.filter(t=>t.t==='in').reduce((a,b)=>a+b.v,0);
+  const pagos=tx.filter(t=>t.s==='pago'&&t.t==='out').reduce((a,b)=>a+Math.abs(b.v),0);
+  const apagar=tx.filter(t=>t.s!=='pago'&&t.t==='out').reduce((a,b)=>a+Math.abs(b.v),0);
+  const saldo=entradas-saidas;
+  const pct=saidas>0?Math.round(pagos/saidas*100):0;
+  document.getElementById('sum-grid').innerHTML=`
+    <div class="sc"><div class="sc-lbl">Entradas</div><div class="sc-val" style="color:#2d9e6b">${fmtR(entradas)}</div><div class="sc-sub">${tx.filter(t=>t.t==='in').length} lançam.</div></div>
+    <div class="sc"><div class="sc-lbl">Saídas</div><div class="sc-val" style="color:#d63031">${fmtR(saidas)}</div><div class="sc-sub">${tx.filter(t=>t.t==='out').length} lançam.</div></div>
+    <div class="sc"><div class="sc-lbl">A pagar</div><div class="sc-val" style="color:#c97a00">${fmtR(apagar)}</div><div class="sc-sub">${tx.filter(t=>t.s!=='pago'&&t.t==='out').length} pendentes</div></div>
+    <div class="sc"><div class="sc-lbl">Saldo</div><div class="sc-val" style="color:#1B3A6B">${fmtR(Math.abs(saldo))} ${saldo>=0?'▲':'▼'}</div><div class="sc-sub">${saldo>=0?'Positivo':'Negativo'}</div></div>
+    <div class="sc wide"><div class="sc-lbl">Execução de pagamentos</div>
+      <div class="pb-bar"><div class="pb-fill" style="width:${pct}%"></div></div>
+      <div class="pb-row"><span style="color:#2d9e6b">✓ ${fmtR(pagos)}</span><span style="font-weight:700">${pct}%</span><span style="color:#c97a00">⏳ ${fmtR(apagar)}</span></div>
+    </div>`;
+}
+
+function renderGrupos(){
+  let html='';
+  GRUPOS_P.forEach(gp=>{
+    const spes=SPE_GROUPS.filter(s=>gp.id!=='todos'&&s.g===gp.id);
+    const gtx=TX.filter(t=>gp.id==='todos'||t.g===gp.id);
+    const pend=gtx.filter(t=>t.s!=='pago'&&t.t==='out').length;
+    const isAct=activeGrupo===gp.id;
+    html+=`<div class="gcard${isAct?' ag':''}" id="gc-${gp.id}">
+      <div class="gcard-head" onclick="setGrupo('${gp.id}')">
+        <div class="g-dot" style="background:${gp.color}"></div>
+        <span class="g-name">${gp.label}</span>
+        <span class="g-cnt">${gtx.length}</span>
+        ${pend?`<span style="font-size:9px;font-weight:700;color:#d63031;margin-left:2px">${pend}⚠</span>`:''}
+        ${spes.length?`<span class="g-chev" onclick="event.stopPropagation();toggleCard('${gp.id}')">▼</span>`:''}
+      </div>`;
+    if(spes.length){
+      html+=`<div class="cascade">`;
+      spes.filter(s=>s.s==='confirmed').forEach(s=>{
+        const sp=TX.filter(t=>s.uaus.includes(t.u)&&t.s!=='pago'&&t.t==='out').length;
+        html+=`<div class="spe-row${activeSPE===s.id?' sel':''}" onclick="setSPE('${s.id}')">
+          <span class="spb ok">${s.d}</span><span class="spe-n">${s.label}</span>
+          ${sp?`<span class="spe-pend">${sp}⚠</span>`:''}
+        </div>`;
+      });
+      const vals=spes.filter(s=>s.s==='validate');
+      if(vals.length){
+        html+=`<div class="clbl red">⚠ Validar grupos</div>`;
+        vals.forEach(s=>{
+          html+=`<div class="spe-row${activeSPE===s.id?' sel':''}" onclick="setSPE('${s.id}')">
+            <span class="spb nok">⚠</span><span class="spe-n">${s.label}</span>
+          </div>`;
+        });
+      }
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+  });
+  document.getElementById('grupos-wrap').innerHTML=html;
+  if(activeGrupo!=='todos'){const c=document.getElementById('gc-'+activeGrupo);if(c)c.classList.add('open');}
+}
+
+function renderBanner(){
+  const el=document.getElementById('spe-banner');
+  if(!activeSPE){el.className='spe-banner';return;}
+  const g=SPE_GROUPS.find(x=>x.id===activeSPE);
+  if(!g){el.className='spe-banner';return;}
+  el.className='spe-banner show'+(g.s==='validate'?' nok':'');
+  el.innerHTML=`<span><strong>${g.label}</strong> · ${g.d}</span><button onclick="clearAll()">✕</button>`;
+}
+
+function renderCats(){
+  document.getElementById('cat-chips').innerHTML=CATS.map(c=>`
+    <span class="chip${activeCat===(c==='Todos'?'todos':c)?'  active':''}" onclick="setCat('${c==='Todos'?'todos':c}')">${c}</span>`).join('');
+}
+
+function getSPETag(u){
+  if(activeSPE) return'';
+  const g=SPE_GROUPS.find(x=>x.uaus.includes(u)&&x.s==='confirmed');
+  const gv=SPE_GROUPS.find(x=>x.uaus.includes(u)&&x.s==='validate');
+  if(g) return`<span class="spe-tag">${g.label}</span>`;
+  if(gv) return`<span class="spe-tag nok">⚠ ${gv.label}</span>`;
+  return'';
+}
+
+function renderTxList(){
+  const tx=filtered().sort((a,b)=>a.dia-b.dia);
+  const iM={CRI:'🏗',Empréstimo:'🏦',Imposto:'📋',Tarifa:'🏧',Aporte:'📤',Distribuição:'🎯',Operacional:'🔄'};
+  const el=document.getElementById('tx-list');
+  if(!tx.length){el.innerHTML='<div class="empty">Nenhum lançamento.</div>';return;}
+  el.innerHTML=tx.map(t=>{
+    const ico=t.t==='in'?'💰':(iM[t.c]||'🔄');
+    const bg=t.t==='in'?'ico-in':t.s==='pend'?'ico-pend':'ico-out';
+    const bdg=t.s==='pago'?'pago':t.s==='venc'?'venc':'pend';
+    return`<div class="tx-item">
+      <div class="tx-ico ${bg}">${ico}</div>
+      <div class="tx-body">
+        <div class="tx-nm">${t.n}${getSPETag(t.u)}</div>
+        <div class="tx-ds">${t.d} · UAU ${t.u}</div>
+        <span class="badge ${bdg}">${t.s==='pago'?'Pago':t.s==='venc'?'Vencido':'A pagar'}</span>
+      </div>
+      <div class="tx-right">
+        <div class="tx-v ${t.t==='out'?'out':'in'}">${t.t==='out'?'- ':'+ '}${fmtR(t.v)}</div>
+        <div class="tx-d">dia ${t.dia}/${(curMonth+1).toString().padStart(2,'0')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderCaixa(){renderBanner();renderSummary();renderCats();renderTxList();}
+
+// ── SALDOS MOBILE
+function renderSaldosMobile(){
+  const cs=CONTAS.filter(c=>activeGrupo==='todos'||c.grupo===activeGrupo);
+  const total=cs.reduce((a,b)=>a+b.saldo,0);
+  const byTipo={};cs.forEach(c=>{byTipo[c.tipo]=(byTipo[c.tipo]||0)+c.saldo;});
+  document.getElementById('saldo-hero').innerHTML=`
+    <div class="hero-card-m"><div class="hero-lbl">Saldo Total</div><div class="hero-val" style="color:#1B3A6B">${fmtR(total)}</div><div class="hero-sub">${cs.length} contas</div></div>
+    <div class="hero-card-m"><div class="hero-lbl">C/C</div><div class="hero-val" style="color:#2d9e6b">${fmtR(byTipo['Conta Corrente']||0)}</div><div class="hero-sub">${cs.filter(c=>c.tipo==='Conta Corrente').length} contas</div></div>
+    <div class="hero-card-m"><div class="hero-lbl">CRI</div><div class="hero-val" style="color:#6c3fa0">${fmtR(byTipo['CRI']||0)}</div><div class="hero-sub">${cs.filter(c=>c.tipo==='CRI').length} contas</div></div>
+    <div class="hero-card-m"><div class="hero-lbl">Escrow/Inv.</div><div class="hero-val" style="color:#c97a00">${fmtR((byTipo['Escrow']||0)+(byTipo['Conta Investimento']||0))}</div><div class="hero-sub">${cs.filter(c=>c.tipo==='Escrow'||c.tipo==='Conta Investimento').length} contas</div></div>`;
+
+  const spes=SPE_GROUPS.filter(g=>activeGrupo==='todos'||g.g===activeGrupo);
+  const tf=document.getElementById('tipo-filter-m').value;
+  let html='';
+  spes.forEach(g=>{
+    let gcs=CONTAS.filter(c=>g.uaus.includes(c.uau));
+    if(tf!=='todos') gcs=gcs.filter(c=>c.tipo===tf);
+    if(!gcs.length) return;
+    const tot=gcs.reduce((a,b)=>a+b.saldo,0);
+    const isSel=activeSPESaldo===g.id;
+    html+=`<div class="ssc-card${isSel?' sel':''}${g.s==='validate'?' nok':''}" onclick="setSPESaldo('${g.id}')">
+      <div class="ssc-top-m">
+        <span class="ssc-name-m">${g.label}</span>
+        <span class="ssc-badge-m ${g.s==='validate'?'nok':'ok'}">${g.s==='validate'?'⚠ validar':g.d}</span>
+      </div>
+      <div class="ssc-val-m">${fmtR(tot)}</div>
+      <div class="ssc-sub-m">${gcs.length} contas · UAU ${g.uaus.slice(0,3).join(',')}${g.uaus.length>3?'…':''}</div>
+    </div>`;
+  });
+  document.getElementById('spe-saldo-list').innerHTML=html||'<div class="empty">Nenhum SPE com contas.</div>';
+  renderContaDetail();
+}
+
+function renderContaDetail(){
+  const sec=document.getElementById('conta-section');
+  if(!activeSPESaldo){sec.style.display='none';return;}
+  const g=SPE_GROUPS.find(x=>x.id===activeSPESaldo);
+  if(!g){sec.style.display='none';return;}
+  sec.style.display='block';
+  const tf=document.getElementById('tipo-filter-m').value;
+  let cs=CONTAS.filter(c=>g.uaus.includes(c.uau));
+  if(tf!=='todos') cs=cs.filter(c=>c.tipo===tf);
+  document.getElementById('conta-sec-title').textContent=g.label+' — '+fmtR(cs.reduce((a,b)=>a+b.saldo,0));
+  const tCls={'Conta Corrente':'tipo-cc',CRI:'tipo-cri',Escrow:'tipo-esc','Conta Investimento':'tipo-inv'};
+  document.getElementById('conta-list').innerHTML=cs.map(c=>`
+    <div class="conta-card">
+      <div class="conta-left">
+        <div class="conta-nome">${c.razao.length>35?c.razao.slice(0,33)+'…':c.razao}</div>
+        <div class="conta-meta">🏦 ${c.banco} · Ag ${c.ag} · C/C ${c.cc} <span class="tipo-badge ${tCls[c.tipo]||'tipo-cc'}">${c.tipo}</span></div>
+      </div>
+      <div style="text-align:right">
+        <div class="conta-saldo">${fmtR(c.saldo)}</div>
+        <div><span class="${c.saldo_real?'real-tag':'sim-tag'}">${c.saldo_real?'REAL':'SIM'}</span></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAll(){renderGrupos();renderCaixa();}
+
+document.getElementById('today-lbl').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+renderAll();
+</script>
+</body>
+</html>
